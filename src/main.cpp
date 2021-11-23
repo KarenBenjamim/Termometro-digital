@@ -40,8 +40,8 @@ void LCD(){
 }
 
 void Temp(){
-        sensors_event_t event; // inicializa o evento da Temperatura
-        dht.temperature().getEvent(&event); // faz a leitura da Temperatura
+    sensors_event_t event; // inicializa o evento da Temperatura
+    dht.temperature().getEvent(&event); // faz a leitura da Temperatura
 
     if (isnan(event.temperature)) // se algum erro na leitura
     {
@@ -50,17 +50,17 @@ void Temp(){
     else // senão
     {
         Serial.print("1º Temperatura: "); // imprime a Temperatura
-        Temp1 = event.temperature;
+        Temp1 = 00.0;
         Serial.print(Temp1);
         Serial.println(" *C");
         delay(delayMS);
         Serial.print("2º Temperatura: ");
-        Temp2 = event.temperature;
+        Temp2 = 00.0;
         Serial.print(Temp2);
         Serial.println(" *C");
         delay(delayMS);
         Serial.print("3º Temperatura: ");
-        Temp3 = event.temperature;
+        Temp3 = 00.0;
         Serial.print(Temp3);
         Serial.println(" *C");
         delay(delayMS);
@@ -74,47 +74,43 @@ void Temp(){
     }
 }
 
-void setup()
-{
+void setup(){
   Serial.begin(9600); // monitor serial 9600 bps
   dht.begin(); // inicializa a função
   Serial.println("Usando o Sensor DHT");
   lcd.init();
-  LCD();
+
+  Temp();
+  LCD();  
 }
  
-void loop()
-{
-  delay(delayMS); // atraso entre as medições
-      sensors_event_t event; // inicializa o evento da Temperatura
-      dht.temperature().getEvent(&event); // faz a leitura da Temperatura
-  if (isnan(event.temperature)) // se algum erro na leitura
-  {
-      Serial.println("Erro na leitura da Temperatura!");
-  }
-  else // senão
-  {
-      Serial.println("------------------LOOP----------------");
-      Temp1 = Temp2;
-      Temp2 = Temp3;
-      Temp3 = Temp4;
-      Temp4 = event.temperature;
-      Serial.print("1º Temperatura: "); // imprime a Temperatura
-      Serial.print(Temp1);
-      Serial.println(" *C");
-      delay(delayMS);
-      Serial.print("2º Temperatura: ");
-      Serial.print(Temp2);
-      Serial.println(" *C");
-      delay(delayMS);
-      Serial.print("3º Temperatura: ");
-      Serial.print(Temp3);
-      Serial.println(" *C");
-      delay(delayMS);
-      Serial.print("4º Temperatura: ");
-      Serial.print(Temp4);
-      Serial.println(" *C");
-      Serial.println("---------------------------------------");
-      LCD();
-  }
+void loop(){
+  sensors_event_t event; // inicializa o evento da Temperatura
+  dht.temperature().getEvent(&event); // faz a leitura da Temperatura
+  Serial.println("------------------LOOP----------------");
+  Temp1 = Temp2;
+  delay(delayMS);
+  Temp2 = Temp3;
+  delay(delayMS);
+  Temp3 = Temp4;
+  delay(delayMS);
+  Temp4 = event.temperature;
+  
+  Serial.print("1º Temperatura: "); // imprime a Temperatura
+  Serial.print(Temp1);
+  Serial.println(" *C");
+  
+  Serial.print("2º Temperatura: ");
+  Serial.print(Temp2);
+  Serial.println(" *C");
+  
+  Serial.print("3º Temperatura: ");
+  Serial.print(Temp3);
+  Serial.println(" *C");
+  
+  Serial.print("4º Temperatura: ");
+  Serial.print(Temp4);
+  Serial.println(" *C");
+  Serial.println("---------------------------------------");
+  LCD();
 }
