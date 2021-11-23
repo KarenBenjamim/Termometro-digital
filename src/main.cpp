@@ -14,9 +14,7 @@ DHT_Unified dht(DHTPIN, DHTTYPE); // configurando o Sensor DHT - pino e tipo
 uint32_t delayMS = 3000; // variável para atraso no tempo
 float Temp1, Temp2, Temp3, Temp4;
 
-#define Button1 26
-#define Button2 27
-#define Button3 33
+
 
 void LCD(){
    lcd.backlight();
@@ -70,21 +68,10 @@ void Temp(){
         Serial.println(" *C");
 
         LCD();
-        Serial.println("----------------------------------");
     }
 }
 
-void setup(){
-  Serial.begin(9600); // monitor serial 9600 bps
-  dht.begin(); // inicializa a função
-  Serial.println("Usando o Sensor DHT");
-  lcd.init();
-
-  Temp();
-  LCD();  
-}
- 
-void loop(){
+void LeiaJa(){
   sensors_event_t event; // inicializa o evento da Temperatura
   dht.temperature().getEvent(&event); // faz a leitura da Temperatura
   Serial.println("------------------LOOP----------------");
@@ -95,7 +82,7 @@ void loop(){
   Temp3 = Temp4;
   delay(delayMS);
   Temp4 = event.temperature;
-  
+
   Serial.print("1º Temperatura: "); // imprime a Temperatura
   Serial.print(Temp1);
   Serial.println(" *C");
@@ -113,4 +100,17 @@ void loop(){
   Serial.println(" *C");
   Serial.println("---------------------------------------");
   LCD();
+}
+
+void setup(){
+  Serial.begin(9600); // monitor serial 9600 bps
+  dht.begin(); // inicializa a função
+  Serial.println("Usando o Sensor DHT");
+  lcd.init();
+  LCD();
+  Temp();   
+}
+ 
+void loop(){
+  
 }
