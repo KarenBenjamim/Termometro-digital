@@ -15,8 +15,8 @@ float Temp2;
 float Temp3;
 float Temp4;
 
-int count1=0;
-int count2=0;
+int cont0=0; // Contador do time0
+int cont1=0; // Contador do time1
 
 const int Button1 = 26; //pino do botão1
 const int Button2 = 25; //pino do botão2
@@ -40,18 +40,14 @@ portMUX_TYPE timerMux1 = portMUX_INITIALIZER_UNLOCKED; // usaremos para cuidar d
 void IRAM_ATTR onTimer0(){
   //Leitura da temperatura
   portENTER_CRITICAL_ISR(&timerMux0);
-  
-  count1 = 1;
-  
+  cont0 = 1;
   portEXIT_CRITICAL_ISR(&timerMux0);
 }
 
 void IRAM_ATTR onTimer1(){
   // noBacklight
   portENTER_CRITICAL_ISR(&timerMux1);
-
-  count2 = 1;
-  
+  cont1 = 1;
   portEXIT_CRITICAL_ISR(&timerMux1);
 }
 
@@ -173,7 +169,7 @@ void setup() {
   timer1 = timerBegin(1, 80, true);  
   // time predefinido anteriomente, função e interrupção de borda
   timerAttachInterrupt(timer1, &onTimer1, true);
-  timerAlarmWrite(timer1, 1000000, true);
+  timerAlarmWrite(timer1, 10000000, true); // Tempo em microsegundos 
 
   timer0 = timerBegin(0, 80, true);
   timerAttachInterrupt(timer0, &onTimer0, true);
@@ -195,14 +191,14 @@ void setup() {
 
 void loop() {
 
-      if (count2 == 1) { 
+      if (cont1 == 1) { 
       //interrupção para desligar o display
       lcd.noBacklight();
       lcd.clear();
-      count2 = 0;
+      cont1 = 0;
     }
 
-    if (count1 == 1) { 
+    if (cont0 == 1) { 
       // Ler temperatura
       timerWrite(timer1, 0); //zera o temporizador1 
       lcd.backlight();
@@ -214,7 +210,7 @@ void loop() {
       Serial.print("--------Temperatura Atual--------\n");
       serial();
       LCD();
-      count1 = 0;
+      cont0 = 0;
     }
   
   //Botões 
