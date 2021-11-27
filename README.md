@@ -19,5 +19,5 @@
 <li>1x - Fonte para Breadboard </li>
 
 <h1> Montagem </h1>
-<img scr="img\img.png">
+<img scr="https://github.com/KarenBenjamim/Termometro-digital/blob/main/img/img.png?raw=true">
 
