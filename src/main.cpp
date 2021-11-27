@@ -191,13 +191,6 @@ void setup() {
 
 void loop() {
 
-      if (cont1 == 1) { 
-      //interrupção para desligar o display
-      lcd.noBacklight();
-      lcd.clear();
-      cont1 = 0;
-    }
-
     if (cont0 == 1) { 
       // Ler temperatura
       timerWrite(timer1, 0); //zera o temporizador1 
@@ -211,6 +204,13 @@ void loop() {
       serial();
       LCD();
       cont0 = 0;
+    }
+
+    if (cont1 == 1) { 
+      //interrupção para desligar o display
+      lcd.noBacklight();
+      lcd.clear();
+      cont1 = 0;
     }
   
   //Botões 
