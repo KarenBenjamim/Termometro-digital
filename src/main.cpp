@@ -1,7 +1,7 @@
-#include "DHT.h"
+#include <DHT.h>
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x27, 16, 2);
 
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 #define DHTTYPE DHT11   // Tipo do Sensor DHT 11
 // DHT Sensor (Pino 4)
@@ -18,8 +18,8 @@ float Temp4;
 int cont0=0; // Contador do time0
 int cont1=0; // Contador do time1
 
-const int Button1 = 26; //pino do botão1
-const int Button2 = 25; //pino do botão2
+const int Button1 = 26; //pino do botão1 (Reset)
+const int Button2 = 25; //pino do botão2 (Leia Ja)
 
 #define TEMPO_DEBOUNCE 10 //ms
  
@@ -218,7 +218,6 @@ void loop() {
     ultimo_acionamento1 = contador_acionamentos1;
     Serial.println("Botão 1 acionado = Reset!\n");
     Reset();
-    
   }
 
   if (contador_acionamentos2 != ultimo_acionamento2){
