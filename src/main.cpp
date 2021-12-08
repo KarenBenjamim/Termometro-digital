@@ -4,7 +4,6 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 #define DHTTYPE DHT11   // Tipo do Sensor DHT 11
-// DHT Sensor (Pino 4)
 uint8_t DHTPin = 14; 
                
 // Inicialização do sensor DHT.
@@ -34,8 +33,9 @@ unsigned long timestamp_ultimo_acionamento2 = 0;
 //Timer https://techtutorialsx.com/2017/10/07/esp32-arduino-timer-interrupts/
 hw_timer_t * timer0 = NULL; // configurar o cronômetro 
 hw_timer_t * timer1 = NULL; // configurar o cronômetro
-portMUX_TYPE timerMux0 = portMUX_INITIALIZER_UNLOCKED; // usaremos para cuidar da sincronização entre o loop principal e o ISR
-portMUX_TYPE timerMux1 = portMUX_INITIALIZER_UNLOCKED; // usaremos para cuidar da sincronização entre o loop principal e o ISR
+// usaremos para cuidar da sincronização entre o loop principal e o ISR
+portMUX_TYPE timerMux0 = portMUX_INITIALIZER_UNLOCKED; 
+portMUX_TYPE timerMux1 = portMUX_INITIALIZER_UNLOCKED;
 
 void IRAM_ATTR onTimer0(){
   //Leitura da temperatura
@@ -73,21 +73,25 @@ void serial(){
 void LCD(){
    lcd.backlight();
    lcd.clear();
+
    lcd.setCursor(0, 0);
    lcd.print(Temp4);
+
    lcd.setCursor(0, 1);
    lcd.print(Temp3);
+
    lcd.setCursor(4, 1);
    lcd.print("  ");
+
    lcd.setCursor(6, 1);
    lcd.print(Temp2);
+
    lcd.setCursor(10, 1);
    lcd.print("  ");
+
    lcd.setCursor(12, 1);
    lcd.print(Temp1);
-   delay(10000);
-   lcd.noBacklight();
-   lcd.clear();
+
 }
 
 void Temp() {
@@ -175,6 +179,7 @@ void setup() {
   timerAttachInterrupt(timer0, &onTimer0, true);
   timerAlarmWrite(timer0, 30000000, true);
 
+  // habilitando o cronômetro
   timerAlarmEnable(timer0); 
   timerAlarmEnable(timer1); 
 
@@ -195,9 +200,6 @@ void loop() {
       // Ler temperatura
       timerWrite(timer1, 0); //zera o temporizador1 
       lcd.backlight();
-      lcd.setCursor(0,0);      
-      lcd.print("Temp. Atual");
-      delay(1000);
 
       Temp();
       Serial.print("--------Temperatura Atual--------\n");
